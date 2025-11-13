@@ -131,18 +131,6 @@ export class SettingsTab extends PluginSettingTab {
 			);
 
 		new Setting(containerEl)
-			.setName("Title Bar")
-			.addButton(bc => this.highlightElement(bc, ".titlebar"))
-			.setDesc("Completely hide Title bar (but it will still technically be there for dragging the window).")
-			.addToggle(tc => tc
-				.setValue(this.plugin.settings.preferences.titleBar)
-				.onChange(async (value) => {
-					this.plugin.settings.preferences.titleBar = value;
-					await this.plugin.saveSettings();
-				})
-			);
-
-		new Setting(containerEl)
 			.setHeading()
 			.setName("Integrations")
 			.setDesc(createFragment((el) => {
