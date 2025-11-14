@@ -15,8 +15,6 @@ export default class Zen extends Plugin {
 	integrator: Integrator;
 
 	async onload() {
-		console.log(`${this.manifest.name}: Loading`);
-
 		await this.loadSettings();
 
 		this.addSettingTab(new SettingsTab(this.app, this));
@@ -35,6 +33,14 @@ export default class Zen extends Plugin {
 			}
 		});
 
+		this.addCommand({
+			id: "toggle2",
+			name: "One (Active Pane Only) Toggle",
+			callback: () => {
+			  this.zenView.toggleZen(true);
+			}
+		  });
+
 		this.integrator = new Integrator(this.app, this);
 		this.integrator.load(pluginIntegrations);
 		this.app.workspace.onLayoutReady(async () => {
@@ -52,8 +58,8 @@ export default class Zen extends Plugin {
 	}
 
 	async onunload() {
-		console.log(`${this.manifest.name}: Unloading`);
 		this.app.workspace.detachLeavesOfType(VIEW_TYPE_ZEN);
+		if(this.settings.enabled) this.zenView.toggleZen();
 	}
 
 	async loadSettings() {
@@ -63,12 +69,14 @@ export default class Zen extends Plugin {
 	async saveSettings() {
 		await this.saveData(this.settings);
 
-		this.zenView.removeGlobalClasses();
-		this.zenView.addGlobalClasses();
+		if (typeof this.zenView != "undefined") {
+			this.zenView.removeGlobalClasses();
+			this.zenView.addGlobalClasses();
 
-		if (this.settings.enabled) {
-			this.zenView.removeBodyClasses();
-			this.zenView.addBodyClasses();
+			if (this.settings.enabled) {
+				this.zenView.removeBodyClasses();
+				this.zenView.addBodyClasses();
+			}
 		}
 	}
 }

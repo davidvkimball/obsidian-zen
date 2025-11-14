@@ -32,7 +32,6 @@ export class Integrator {
 
 	load(integrations: any[]) {
 		integrations.map((el) => {
-			console.log(`${this.plugin.manifest.name}: Found integration\n[${el.name}]`);
 			this.integrations.push(el);
 			const foundPlugin = this.plugin.settings.integrations.filter(e => e.name === el.name);
 			if (foundPlugin.length > 0) {
